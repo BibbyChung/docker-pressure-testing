@@ -6,12 +6,12 @@ Using this tool to test your machines.
 
 ``` docker
 docker run \
-  --cpus=0.8 \
-  --memory=128M \
+  --cpus=0.5 \
+  --memory=256M \
   bibbynet/docker-pressure-testing:latest \
     --cpu 1 \
     --vm 1 \
-    --vm-bytes 64M
+    --vm-bytes 128M
 ```
 
 ## Options
