@@ -9,8 +9,9 @@ RUN apk add --update bash g++ make curl && \
   apk del g++ make curl && \
   rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/cache/distfiles/*
 
-# ENTRYPOINT ["/usr/local/bin/stress", "--verbose"]
-# ENTRYPOINT ["sh", "-c", "nginx -g 'daemon off;' & /usr/local/bin/stress --verbose"]
-ENTRYPOINT ["sh", "-c", "nginx -g 'daemon off;'"]
+WORKDIR /app
+COPY main.sh /app
+
+ENTRYPOINT ["/app/main.sh"]
 CMD []
 
