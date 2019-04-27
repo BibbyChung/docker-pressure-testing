@@ -1,6 +1,6 @@
 # docker-pressure-testing
 
-Using this tool to test your machines.
+Using this docker image to test your machines.
 
 ## How To Use
 
