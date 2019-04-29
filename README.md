@@ -4,7 +4,7 @@ Using this docker image to test your machines.
 
 ## How To Use
 
-``` docker
+``` bash
 docker run \
   --cpus=0.5 \
   --memory=256M \
@@ -35,6 +35,58 @@ services:
         reservations:
           cpus: "0.5"
           memory: 256M
+```
+
+``` yaml
+# kubectl apply -f k8s.yaml
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: my-pressure-testing
+  name: my-pressure-testing
+spec:
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 60%
+      maxUnavailable: 60%
+  selector:
+    matchLabels:
+      run: my-pressure-testing
+  template:
+    metadata:
+      labels:
+        run: my-pressure-testing
+    spec:
+      containers:
+      - image: bibbynet/docker-pressure-testing:1.0
+        name: my-pressure-testing
+        ports:
+        - containerPort: 80
+        args: ["--cpu", "1", "--vm", "1", "--vm-bytes", "128M"]
+        resources:
+          requests:
+            cpu: 256m
+            memory: 256Mi
+          limits:
+            cpu: 256m
+            memory: 256Mi
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 60
+          timeoutSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 60
+          timeoutSeconds: 10
 ```
 
 ## Options
